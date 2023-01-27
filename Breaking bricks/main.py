@@ -1,3 +1,8 @@
+'''
+A 2D game in which the player 
+destroys bricks by bouncing a ball
+'''
+
 import sys
 
 import pygame
@@ -21,6 +26,8 @@ ball_rect = ball.get_rect()
 brick = pygame.image.load('Breaking bricks/images/brick.png')
 brick = brick.convert_alpha()
 brick = pygame.transform.scale(brick, (48,48))
+
+#Create rows, columns, and gaps
 brick_rect = brick.get_rect()
 bricks = []
 brick_rows = 3
@@ -28,16 +35,19 @@ brick_gap = 10
 brick_cols = screen.get_width()//(brick_rect[2] + brick_gap)
 side_gap = (screen.get_width() - (brick_rect[2] + brick_gap) * brick_cols + brick_gap)//2
 
+#Brick images will fill all screen
+#with 3 rows
 for y in range(brick_rows):
     brickY = y * (brick_rect[3]+brick_gap)
     for x in range(brick_cols):
         brickX = x * (brick_rect[2]+brick_gap) + side_gap
         bricks.append((brickX, brickY))
 
+#Object to track time 
 clock = pygame.time.Clock()
 
 while True:
-    dt = clock.tick(60)
+    dt = clock.tick(60) # max 60 frames per second
     screen.fill((0,0,0))
 
     for b in bricks:
