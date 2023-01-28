@@ -78,8 +78,17 @@ while True:
     elif pressed[K_SPACE]:
          ball_served = True
 
+
+    #If the ball touch a paddle, hit the ball back
+    if paddle_rect[0] + paddle_rect.width >= ball_rect[0] >= paddle_rect[0] and \
+        ball_rect[1] + ball_rect.height >= paddle_rect[1] and sy > 0:
+        sy *= -1
+        sx *= 1.01 #increase x speeed
+        sy *= 1.01 #increase y speed
+        continue
+
     
-    #change movement direction if hit the end of the available height and width
+    #Change movement direction if hit the end of the available height and width
 
     #top
     if ball_rect[1] <= 0:
@@ -88,8 +97,8 @@ while True:
 
     #bottom
     elif ball_rect[1] >= 600 - 24:
-         ball_rect[1] = 600 - 24
-         sy *= -1
+         ball_served = False
+         ball_rect.topleft = ball_start
 
     #left
     elif ball_rect[0] <= 0:
@@ -101,6 +110,7 @@ while True:
          ball_rect[0] = 800 - 24
          sx *= -1
     
+    #If True than move the ball
     if ball_served:
         ball_rect[0] += sx
         ball_rect[1] += sy
