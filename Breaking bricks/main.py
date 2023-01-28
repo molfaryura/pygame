@@ -22,8 +22,15 @@ paddle_rect[1] = screen.get_height() - 100
 
 #Loading ball image
 ball = pygame.image.load('Breaking bricks/images/ball.png')
-ball = paddle.convert_alpha()
+ball = ball.convert_alpha()
+ball = pygame.transform.scale(ball, (24,24))
 ball_rect = ball.get_rect()
+
+ball_start = (200, 200)
+ball_speed = (3.0, 3.0)
+ball_served = False
+sx, sy = ball_speed
+ball_rect.topleft = ball_start
 
 #Loading brick image
 brick = pygame.image.load('Breaking bricks/images/brick.png')
@@ -58,6 +65,7 @@ while True:
 
     #Put paddle in the left corner    
     screen.blit(paddle, paddle_rect)
+    screen.blit(ball, ball_rect)
 
     #Initialize key pressing in the game
     pressed = pygame.key.get_pressed()
@@ -67,6 +75,35 @@ while True:
             paddle_rect[0]-=0.3 * dt
     elif pressed[K_RIGHT] and paddle_rect[0] < 800 - 128:
             paddle_rect[0]+=0.3 * dt
+    elif pressed[K_SPACE]:
+         ball_served = True
+
+    
+    #change movement direction if hit the end of the available height and width
+
+    #top
+    if ball_rect[1] <= 0:
+         ball_rect[1] = 0
+         sy *= -1
+
+    #bottom
+    elif ball_rect[1] >= 600 - 24:
+         ball_rect[1] = 600 - 24
+         sy *= -1
+
+    #left
+    elif ball_rect[0] <= 0:
+         ball_rect[0] = 0
+         sx  *= -1
+
+    #right
+    elif ball_rect[0] >= 800 - 24:
+         ball_rect[0] = 800 - 24
+         sx *= -1
+    
+    if ball_served:
+        ball_rect[0] += sx
+        ball_rect[1] += sy
 
     #Correct exit if user press on quit
     for event in pygame.event.get():
@@ -75,4 +112,3 @@ while True:
     
     pygame.display.update()
     screen.fill((0,0,0))
-
