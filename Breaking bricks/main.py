@@ -7,6 +7,8 @@ import sys
 
 import pygame
 
+from pygame.locals import *
+
 pygame.init()
 
 screen = pygame.display.set_mode((800, 600))
@@ -16,6 +18,7 @@ pygame.display.set_caption("Breaking Bricks")
 paddle = pygame.image.load('Breaking bricks/images/paddle.png')
 paddle = paddle.convert_alpha()
 paddle_rect = paddle.get_rect()
+paddle_rect[1] = screen.get_height() - 100
 
 #Loading ball image
 ball = pygame.image.load('Breaking bricks/images/ball.png')
@@ -48,13 +51,28 @@ clock = pygame.time.Clock()
 
 while True:
     dt = clock.tick(60) # max 60 frames per second
-    screen.fill((0,0,0))
 
+    #Blit all screen width with bricks
     for b in bricks:
         screen.blit(brick, b)
 
+    #Put paddle in the left corner    
+    screen.blit(paddle, paddle_rect)
+
+    #Initialize key pressing in the game
+    pressed = pygame.key.get_pressed()
+
+    #Move paddle by pressing keys
+    if pressed[K_LEFT] and paddle_rect[0] > 0:
+            paddle_rect[0]-=0.3 * dt
+    elif pressed[K_RIGHT] and paddle_rect[0] < 800 - 128:
+            paddle_rect[0]+=0.3 * dt
+
+    #Correct exit if user press on quit
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
     
     pygame.display.update()
+    screen.fill((0,0,0))
+
