@@ -19,6 +19,7 @@ paddle = pygame.image.load('Breaking bricks/images/paddle.png')
 paddle = paddle.convert_alpha()
 paddle_rect = paddle.get_rect()
 paddle_rect[1] = screen.get_height() - 100
+paddle_rect[0] = (screen.get_width() - paddle_rect.width)//2
 
 #Loading ball image
 ball = pygame.image.load('Breaking bricks/images/ball.png')
@@ -26,7 +27,7 @@ ball = ball.convert_alpha()
 ball = pygame.transform.scale(ball, (24,24))
 ball_rect = ball.get_rect()
 
-ball_start = (200, 200)
+ball_start = (180, 250 )
 ball_speed = (3.0, 3.0)
 ball_served = False
 sx, sy = ball_speed
@@ -40,13 +41,13 @@ brick = pygame.transform.scale(brick, (48,48))
 #Create rows, columns, and gaps
 brick_rect = brick.get_rect()
 bricks = []
-brick_rows = 3
+brick_rows = 4
 brick_gap = 10
 brick_cols = screen.get_width()//(brick_rect[2] + brick_gap)
 side_gap = (screen.get_width() - (brick_rect[2] + brick_gap) * brick_cols + brick_gap)//2
 
 #Brick images will fill all screen
-#with 3 rows
+#with 4 rows
 for y in range(brick_rows):
     brickY = y * (brick_rect[3]+brick_gap)
     for x in range(brick_cols):
@@ -83,11 +84,22 @@ while True:
     if paddle_rect[0] + paddle_rect.width >= ball_rect[0] >= paddle_rect[0] and \
         ball_rect[1] + ball_rect.height >= paddle_rect[1] and sy > 0:
         sy *= -1
-        sx *= 1.01 #increase x speeed
-        sy *= 1.01 #increase y speed
+        sx *= 1.02 #increase x speeed
+        sy *= 1.02 #increase y speed
         continue
 
-    
+    #Destroy bricks
+    delete_brick = None
+    for b in bricks:
+         bx, by = b
+         if bx <= ball_rect[0] <= bx + brick_rect.width and \
+         by <= ball_rect[1] <= by + brick_rect.height:
+              delete_brick = b
+
+    if delete_brick:
+         bricks.remove(delete_brick)
+         sy *= -1
+
     #Change movement direction if hit the end of the available height and width
 
     #top
