@@ -73,11 +73,11 @@ while True:
 
     #Move paddle by pressing keys
     if pressed[K_LEFT] and paddle_rect[0] > 0:
-            paddle_rect[0]-=0.3 * dt
+        paddle_rect[0]-=0.3 * dt
     elif pressed[K_RIGHT] and paddle_rect[0] < 800 - 128:
-            paddle_rect[0]+=0.3 * dt
+        paddle_rect[0]+=0.3 * dt
     elif pressed[K_SPACE]:
-         ball_served = True
+        ball_served = True
 
 
     #If the ball touch a paddle, hit the ball back
@@ -91,37 +91,37 @@ while True:
     #Destroy bricks
     delete_brick = None
     for b in bricks:
-         bx, by = b
-         if bx <= ball_rect[0] <= bx + brick_rect.width and \
-         by <= ball_rect[1] <= by + brick_rect.height:
-              delete_brick = b
+        bx, by = b
+        if bx <= ball_rect[0] <= bx + brick_rect.width and \
+        by <= ball_rect[1] <= by + brick_rect.height:
+            delete_brick = b
 
     if delete_brick:
-         bricks.remove(delete_brick)
-         sy *= -1
+        bricks.remove(delete_brick)
+        sy *= -1
 
     #Change movement direction if hit the end of the available height and width
 
     #top
     if ball_rect[1] <= 0:
-         ball_rect[1] = 0
-         sy *= -1
+        ball_rect[1] = 0
+        sy *= -1
 
     #bottom
     elif ball_rect[1] >= 600 - 24:
-         ball_served = False
-         ball_rect.topleft = ball_start
+        ball_served = False
+        ball_rect.topleft = ball_start
 
     #left
     elif ball_rect[0] <= 0:
-         ball_rect[0] = 0
-         sx  *= -1
+        ball_rect[0] = 0
+        sx  *= -1
 
     #right
     elif ball_rect[0] >= 800 - 24:
-         ball_rect[0] = 800 - 24
-         sx *= -1
-    
+        ball_rect[0] = 800 - 24
+        sx *= -1
+
     #If True than move the ball
     if ball_served:
         ball_rect[0] += sx
@@ -131,6 +131,6 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
-    
+
     pygame.display.update()
     screen.fill((0,0,0))
