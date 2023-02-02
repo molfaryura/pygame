@@ -5,24 +5,31 @@ destroys bricks by bouncing a ball
 
 import sys
 
+import os
+
 import pygame
 
 from pygame.locals import *
 
 pygame.init()
 
+try:
+    os.environ["DISPLAY"]
+except:
+    os.environ["SDL_VIDEODRIVER"] = "dummy"
+
 screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Breaking Bricks")
 
 #Loading paddle image
-paddle = pygame.image.load('Breaking bricks/images/paddle.png')
+paddle = pygame.image.load('./images/paddle.png')
 paddle = paddle.convert_alpha()
 paddle_rect = paddle.get_rect()
 paddle_rect[1] = screen.get_height() - 100
 paddle_rect[0] = (screen.get_width() - paddle_rect.width)//2
 
 #Loading ball image
-ball = pygame.image.load('Breaking bricks/images/ball.png')
+ball = pygame.image.load('./images/ball.png')
 ball = ball.convert_alpha()
 ball = pygame.transform.scale(ball, (24,24))
 ball_rect = ball.get_rect()
@@ -34,7 +41,7 @@ sx, sy = ball_speed
 ball_rect.topleft = ball_start
 
 #Loading brick image
-brick = pygame.image.load('Breaking bricks/images/brick.png')
+brick = pygame.image.load('./images/brick.png')
 brick = brick.convert_alpha()
 brick = pygame.transform.scale(brick, (48,48))
 
