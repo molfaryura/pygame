@@ -1,7 +1,4 @@
-'''
-A 2D game in which the player 
-destroys bricks by bouncing a ball
-'''
+"""A 2D game in which the player destroys bricks by bouncing a ball"""
 
 import sys
 
@@ -36,7 +33,7 @@ ball_rect = ball.get_rect()
 
 ball_start = (180, 250 )
 ball_speed = (3.0, 3.0)
-ball_served = False
+BALL_SERVED = False
 sx, sy = ball_speed
 ball_rect.topleft = ball_start
 
@@ -48,20 +45,20 @@ brick = pygame.transform.scale(brick, (48,48))
 #Create rows, columns, and gaps
 brick_rect = brick.get_rect()
 bricks = []
-brick_rows = 4
-brick_gap = 10
-brick_cols = screen.get_width()//(brick_rect[2] + brick_gap)
-side_gap = (screen.get_width() - (brick_rect[2] + brick_gap) * brick_cols + brick_gap)//2
+BRICK_ROWS = 4
+BRICK_GAP = 10
+brick_cols = screen.get_width()//(brick_rect[2] + BRICK_GAP)
+side_gap = (screen.get_width() - (brick_rect[2] + BRICK_GAP) * brick_cols + BRICK_GAP)//2
 
 #Brick images will fill all screen
 #with 4 rows
-for y in range(brick_rows):
-    brickY = y * (brick_rect[3]+brick_gap)
+for y in range(BRICK_ROWS):
+    brickY = y * (brick_rect[3]+BRICK_GAP)
     for x in range(brick_cols):
-        brickX = x * (brick_rect[2]+brick_gap) + side_gap
+        brickX = x * (brick_rect[2]+BRICK_GAP) + side_gap
         bricks.append((brickX, brickY))
 
-#Object to track time 
+#Object to track time
 clock = pygame.time.Clock()
 
 while True:
@@ -71,7 +68,7 @@ while True:
     for b in bricks:
         screen.blit(brick, b)
 
-    #Put paddle in the left corner    
+    #Put paddle in the left corner
     screen.blit(paddle, paddle_rect)
     screen.blit(ball, ball_rect)
 
@@ -84,7 +81,7 @@ while True:
     elif pressed[K_RIGHT] and paddle_rect[0] < 800 - 128:
         paddle_rect[0]+=0.3 * dt
     elif pressed[K_SPACE]:
-        ball_served = True
+        BALL_SERVED = True
 
 
     #If the ball touch a paddle, hit the ball back
@@ -96,15 +93,15 @@ while True:
         continue
 
     #Destroy bricks
-    delete_brick = None
+    DELETE_BRICK = None
     for b in bricks:
         bx, by = b
         if bx <= ball_rect[0] <= bx + brick_rect.width and \
         by <= ball_rect[1] <= by + brick_rect.height:
-            delete_brick = b
+            DELETE_BRICK = b
 
-    if delete_brick:
-        bricks.remove(delete_brick)
+    if DELETE_BRICK:
+        bricks.remove(DELETE_BRICK)
         sy *= -1
 
     #Change movement direction if hit the end of the available height and width
@@ -116,7 +113,7 @@ while True:
 
     #bottom
     elif ball_rect[1] >= 600 - 24:
-        ball_served = False
+        BALL_SERVED = False
         ball_rect.topleft = ball_start
 
     #left
@@ -130,7 +127,7 @@ while True:
         sx *= -1
 
     #If True than move the ball
-    if ball_served:
+    if BALL_SERVED:
         ball_rect[0] += sx
         ball_rect[1] += sy
 
