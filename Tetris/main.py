@@ -2,21 +2,19 @@
 
 """Tetris 2D Game"""
 
-import pygame
-
 import random
 
-from blocks import Block, screen, cols
+import pygame
 
-GRID_SIZE = 30
+from blocks import Block, screen, COLS
 
 pygame.init()
 
-block = Block((cols - 1) // 2, 0)
+block = Block((COLS - 1) // 2, 0)
 clock = pygame.time.Clock()
-fps = 10
+FPS = 10
 
-score = 0
+SCORE = 0
 font = pygame.font.SysFont('Times New Roman', 35, True)
 
 font_game_over = pygame.font.SysFont('Times New Roman', 60, True)
@@ -28,7 +26,7 @@ GAME_FINISHED = False
 
 GAME_OVER = False
 while not GAME_OVER:
-    clock.tick(fps)
+    clock.tick(FPS)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             GAME_OVER = True
@@ -54,12 +52,13 @@ while not GAME_OVER:
 
         if event.type != pygame.KEYDOWN:
             if not block.drop_block() and not GAME_FINISHED:
-                score += block.find_lines()
-                block = Block(x=random.randint(0, cols - 2), y=0)
-                if block.collides(0, 0):
+                SCORE += Block.find_lines()
+                FPS += 0.2
+                block = Block(x_cor=random.randint(5, COLS - 5), y_cor=0)
+                if block.collides(n_x=0, n_y=0):
                     GAME_FINISHED = True
 
-    text = font.render(f'Score: {str(score)}', True, (255, 255, 255))
+    text = font.render(f'SCORE: {str(SCORE)}', True, (255, 255, 255))
     screen.blit(text, [10, 10])
 
     if GAME_FINISHED:
