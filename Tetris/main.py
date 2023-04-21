@@ -25,6 +25,7 @@ text_game_over_pos = ((screen.get_width() - text_game_over.get_width())//2,
                       (screen.get_height() - text_game_over.get_height())//2)
 
 GAME_FINISHED = False
+
 GAME_OVER = False
 while not GAME_OVER:
     clock.tick(fps)

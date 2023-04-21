@@ -74,13 +74,9 @@ class Block:
         for y in range(3):
             for x in range(3):
                 if y * 3 + x in self.shape():
-                    if x + self.x + nx < 0 or x + self.x + nx > cols -1:
-                        collision = True
-                        break
-                    if y + self.y + ny < 0 or y + self.y + ny > rows_ -1:
-                        collision = True
-                        break
-                    if game_board[x + self.x + nx][y + self.y + ny] != (0, 0, 0):
+                    if (x + self.x + nx < 0 or x + self.x + nx > cols -1) or \
+                        (y + self.y + ny < 0 or y + self.y + ny > rows_ - 1) or \
+                        (game_board[x + self.x + nx][y + self.y + ny] != (0, 0, 0)):
                         collision = True
                         break
         return collision
