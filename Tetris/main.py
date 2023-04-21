@@ -12,11 +12,20 @@ GRID_SIZE = 30
 
 pygame.init()
 
-GAME_OVER = False
 block = Block((cols - 1) // 2, 0)
 clock = pygame.time.Clock()
-fps = 5
+fps = 10
 
+score = 0
+font = pygame.font.SysFont('Times New Roman', 35, True)
+
+font_game_over = pygame.font.SysFont('Times New Roman', 60, True)
+text_game_over = font_game_over.render('Game Over', True, (255, 255, 255))
+text_game_over_pos = ((screen.get_width() - text_game_over.get_width())//2,
+                      (screen.get_height() - text_game_over.get_height())//2)
+
+GAME_FINISHED = False
+GAME_OVER = False
 while not GAME_OVER:
     clock.tick(fps)
     for event in pygame.event.get():
@@ -43,8 +52,17 @@ while not GAME_OVER:
         block.draw_block()
 
         if event.type != pygame.KEYDOWN:
-            if not block.drop_block():
+            if not block.drop_block() and not GAME_FINISHED:
+                score += block.find_lines()
                 block = Block(x=random.randint(0, cols - 2), y=0)
+                if block.collides(0, 0):
+                    GAME_FINISHED = True
+
+    text = font.render(f'Score: {str(score)}', True, (255, 255, 255))
+    screen.blit(text, [10, 10])
+
+    if GAME_FINISHED:
+        screen.blit(text_game_over, text_game_over_pos)
 
     pygame.display.update()
 

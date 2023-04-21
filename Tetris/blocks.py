@@ -16,6 +16,21 @@ BLOCKS = [
     [[4, 6, 7, 8], [0, 3, 4, 6], [0, 1, 2, 4], [2, 4, 5, 8]] # one on three
 ]
 
+COLORS = [
+  (255, 0, 0),    # Red
+  (0, 255, 0),    # Green
+  (0, 0, 255),    # Blue
+  (255, 255, 0),  # Yellow
+  (255, 0, 255),  # Magenta
+  (0, 255, 255),  # Cyan
+  (128, 0, 0),    # Maroon
+  (0, 128, 0),    # Dark Green
+  (0, 0, 128),    # Navy
+  (128, 128, 0),  # Olive
+  (128, 0, 128),  # Purple
+  (0, 128, 128)   # Teal
+]
+
 GRID_SIZE = 30
 
 screen = display.set_mode((800, 800))
@@ -32,12 +47,14 @@ for i in range(cols):
     new_col = [(0,0,0) for _ in range(rows_)]
     game_board.append(new_col)
 
+
 class Block:
     def __init__(self, x , y) -> None:
         self.x = x
         self.y = y
         self.type = random.randint(0,6)
         self.rotation = 0
+        self.color = random.choice(COLORS)
 
     def shape(self):
         return BLOCKS[self.type][self.rotation]
@@ -46,7 +63,7 @@ class Block:
         for y in range(3):
             for x in range(3):
                 if y * 3 + x in self.shape():
-                    draw.rect(screen, (255, 255, 255),
+                    draw.rect(screen, self.color,
                                     [(x + self.x) * GRID_SIZE + x_gap_ + 1,
                                     (y + self.y) * GRID_SIZE + y_gap_ + 1,
                                     GRID_SIZE, GRID_SIZE])
@@ -81,7 +98,7 @@ class Block:
             for y in range(3):
                 for x in range(3):
                     if y * 3 + x in self.shape():
-                        game_board[x + self.x][y + self.y] = (0, 255, 0)
+                        game_board[x + self.x][y + self.y] = self.color
 
         return can_drop
 
@@ -120,3 +137,18 @@ class Block:
 
         if not can_rotate:
             self.rotation = last_rotation
+
+    def find_lines(self):
+        lines = 0
+        for y in range(rows_):
+            empty = 0
+            for x in range(cols):
+                if game_board[x][y] == (0, 0, 0):
+                    empty += 1
+            if not bool(empty):
+                lines += 1
+                for y_ in range(y, 1, -1):
+                    for x_ in range(cols):
+                        game_board[x_][y_] = game_board[x_][y_ - 1]
+        return lines
+    
