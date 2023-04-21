@@ -4,3 +4,6 @@ All games were created during this Udemy course [link](https://www.udemy.com/cou
 The player should destroy all bricks to win the game.
 
 <img src="img/demo.png" width="400" height="300">
+
+## :video_game: Tetris
+<img src="img/demo_tetris.png" width="300" height="400">
